@@ -1,3 +1,0 @@
-/home/terrainwax/Repo/PSU_myftp_2017/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/terrainwax/Repo/PSU_myftp_2017/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/terrainwax/Repo/PSU_myftp_2017/cmake-build-debug/CMakeFiles/PSU_myftp_2017.dir

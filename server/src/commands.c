@@ -7,13 +7,20 @@
 
 #include "ftp.h"
 
-void send_f(int out_fd, int in_fd, size_t *count, send_t *send)
+int send_f(int out_fd, int in_fd, size_t *count, send_t *send)
 {
 	send->toRead = count[0] < BUF_SIZE ? count[0] : BUF_SIZE;
 	send->numRead = (size_t)read(in_fd, send->buf, send->toRead);
+	if (send->numRead == 0)
+		return 0;
 	send->numSent = (size_t)write(out_fd, send->buf, send->numRead);
+	if (send->numSent == 0) {
+		perror("sendfile: write() transferred 0 bytes");
+		exit(-1);
+	}
 	count[0] -= send->numSent;
 	send->totSent += send->numSent;
+	return 0;
 }
 
 ssize_t send_file(int out_fd, int in_fd, off_t *offset, size_t count)
@@ -27,7 +34,8 @@ ssize_t send_file(int out_fd, int in_fd, off_t *offset, size_t count)
 	}
 	send.totSent = 0;
 	while (count > 0) {
-		send_f(out_fd, in_fd, &count, &send);
+		if (send_f(out_fd, in_fd, &count, &send) == -1)
+			return -1;
 	}
 	if (offset != NULL) {
 		*offset = lseek(in_fd, 0, SEEK_CUR);

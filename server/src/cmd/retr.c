@@ -19,7 +19,7 @@ void exec_retr(state_t *state, int fd, int *connection)
 	connection[0] = accept_connection(state->sock_pasv);
 	close(state->sock_pasv);
 	if ((sent_total = (int)send_file(connection[0], fd, &offset,
-		(size_t)stat_buf.st_size))) {
+		(size_t)stat_buf.st_size)) >= 0) {
 		if (sent_total != stat_buf.st_size) {
 			perror("sendfile");
 			exit(EXIT_SUCCESS);
