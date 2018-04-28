@@ -30,6 +30,9 @@
 #ifndef BUF_SIZE
 	#define BUF_SIZE 8192
 #endif
+#ifndef	EXIT_FAIL
+	#define EXIT_FAIL 84
+#endif
 
 
 #ifndef PSU_MYFTP_2017_FTP_H
@@ -152,6 +155,7 @@ void	print_info(char *str);
 int 	lookup_cmd(char *cmd);
 int 	lookup(char *needle, const char **haystack, int count);
 void 	getip(int sock, int *ip);
+void 	help();
 
 void 	response(command_t *, state_t *);
 void 	ftp_user(command_t *, state_t *);

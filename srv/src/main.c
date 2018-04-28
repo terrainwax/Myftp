@@ -25,7 +25,7 @@ void fork_client(ftp_t *ftp)
 			memset(ftp->buffer, 0, BSIZE);
 			memset(ftp->cmd, 0, 1 * sizeof(ftp->cmd));
 		} else
-			perror("server:read");
+			perror("srv:read");
 	}
 	print_info("Client disconnected.\n");
 	exit(0);
@@ -36,13 +36,13 @@ ftp_t *init_ftp(int port)
 	ftp_t *ftp = malloc(sizeof(ftp_t));
 
 	if (ftp == NULL)
-		exit(EXIT_FAILURE);
+		exit(EXIT_FAIL);
 	ftp->sock = create_socket(port);
 	ftp->len = sizeof(ftp->client_address);
 	ftp->cmd = malloc(sizeof(command_t));
 	ftp->state = malloc(sizeof(state_t));
 	if (ftp->cmd == NULL || ftp->state == NULL)
-		exit(EXIT_FAILURE);
+		exit(EXIT_FAIL);
 	return ftp;
 }
 
@@ -57,7 +57,7 @@ void server(int port)
 		memset(ftp->buffer, 0, BSIZE);
 		if (ftp->pid < 0) {
 			fprintf(stderr, "Cannot create child process.");
-			exit(EXIT_FAILURE);
+			exit(EXIT_FAIL);
 		}
 
 		if (ftp->pid == 0) {
@@ -79,12 +79,12 @@ int create_socket(int port)
 	server_address.sin_addr.s_addr = INADDR_ANY;
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 		fprintf(stderr, "Cannot open socket");
-		exit(EXIT_FAILURE);
+		exit(EXIT_FAIL);
 	}
 	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof reuse);
 	if (bind(sock, (struct sockaddr *)&server_address,
 		sizeof(server_address)) < 0) {
-		exit(EXIT_FAILURE);
+		exit(EXIT_FAIL);
 	}
 	listen(sock, 5);
 	return sock;
@@ -94,12 +94,17 @@ int 	main(int ac, char **av)
 {
 	int port;
 
-	if (ac != 2)
-		return EXIT_FAILURE;
+	if (ac == 2)
+		if (strcmp(av[1], "-help\0") == 0)
+			help();
+	if (ac != 3)
+		return EXIT_FAIL;
 	if (is_numeric(av[1]))
 		port = atoi(av[1]);
 	else
-		return EXIT_FAILURE;
+		return EXIT_FAIL;
+	if (chdir(av[2]) != 0)
+		return EXIT_FAIL;
 	server(port);
 	return EXIT_SUCCESS;
 

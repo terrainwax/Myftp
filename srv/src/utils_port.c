@@ -35,3 +35,12 @@ int is_numeric(const char * s)
 	strtod (s, &p);
 	return *p == '\0';
 }
+
+void help()
+{
+	printf("%s%s%s%s%s","USAGE:  ./srv port path\n",
+	       "\tport is the port number on which ",
+		"the srv socket listens\n",
+	       "\tpath is the path to the home ",
+		"directory for the Anonymous user\n");
+}

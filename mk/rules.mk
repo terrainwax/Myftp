@@ -1,4 +1,4 @@
-OBJ_DIR=	./server/obj/
+OBJ_DIR=	./srv/obj/
 OBJ_C=		$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 OBJ=		$(filter %.o, $(OBJ_C))
 

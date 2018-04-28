@@ -1,7 +1,7 @@
 # Definitions for Makefile
-NAME=			myftp
+NAME=			server
 
-INC_DIR=		-I./server/include/
+INC_DIR=		-I./srv/include/
 
 DEBUG=			yes
 

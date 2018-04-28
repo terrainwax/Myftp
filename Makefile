@@ -2,7 +2,7 @@ MK_DIR=		./mk/
 
 include $(MK_DIR)color.mk $(MK_DIR)def.mk $(MK_DIR)local_def.mk
 
-SRC_DIR=	./server/src/
+SRC_DIR=	./srv/src/
 
 SRC_FILES=	main.c			\
 			logger.c		\

@@ -15,7 +15,7 @@ PIPE=fifo
 OUT=outfile
 TAIL=`which tail`
 NC="`which nc` -c"
-TIMEOUT=1 #max time before reading server response
+TIMEOUT=1 #max time before reading srv response
 
 
 getcode()
