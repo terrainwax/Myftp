@@ -1,0 +1,4 @@
+/opt/JetBrains/apps/CLion/ch-0/181.4445.84/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/terrainwax/Repo/PSU_myftp_2017
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/terrainwax/Repo/PSU_myftp_2017/cmake-build-debug
