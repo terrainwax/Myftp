@@ -30,19 +30,42 @@ void exec_retr(state_t *state, int fd, int *connection)
 	}
 }
 
+void exec_retr_port(state_t *state, int fd, int *connection)
+{
+	struct stat stat_buf;
+	off_t offset = 0;
+	int sent_total = 0;
+
+	fstat(fd, &stat_buf);
+	state->message = "150 BINARY Mode.\n";
+	write_state(state);
+	connection[0] = connect_port(state);
+	if ((sent_total = (int)send_file(connection[0], fd, &offset,
+		(size_t)stat_buf.st_size)) >= 0) {
+		if (sent_total != stat_buf.st_size) {
+			perror("sendfile");
+			exit(EXIT_SUCCESS);
+		}
+		state->message = "226 Send.\n";
+	} else {
+		state->message = "550 Read.\n";
+	}
+	close(state->sock_port);
+}
+
 void ftp_retr(command_t *cmd, state_t *state)
 {
 	int connection, fd;
 	if (fork() == 0) {
 		if (state->logged_in) {
-			if (state->mode == SERVER) {
-				if (access(cmd->arg, R_OK) == 0 &&
-					(fd = open(cmd->arg, O_RDONLY)))
+			if (access(cmd->arg, R_OK) == 0 &&
+				(fd = open(cmd->arg, O_RDONLY))) {
+				if (state->mode == SERVER)
 					exec_retr(state, fd, &connection);
 				else
-					state->message = "550 get file\n";
+					exec_retr_port(state, fd, &connection);
 			} else
-				state->message = "550 Please use PASV.\n";
+				state->message = "550 get file\n";
 		} else
 			state->message = "530 Please login.\n";
 		close(fd);

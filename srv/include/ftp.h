@@ -51,7 +51,9 @@ typedef struct 	state_s {
 	char 	*username;
 	char 	*message;
 	int 	connection;
+	struct sockaddr_in server_address;
 	int 	sock_pasv;
+	int 	sock_port;
 	int 	tr_pid;
 
 } 		state_t;
@@ -142,12 +144,14 @@ typedef enum 	cmdlist_s
 		STOR,
 		TYPE,
 		USER,
-		NOOP
+		NOOP,
+		CDUP
 } 		cmdlist_t;
 
 void 	gen_port(port_t *);
 void 	parse_command(char *, command_t *);
 int 	create_socket(int port);
+void	create_socket_port(int port, char *ip, state_t *state);
 void	 write_state(state_t *);
 int 	accept_connection(int);
 int 	is_numeric (const char * s);
@@ -156,6 +160,7 @@ int 	lookup_cmd(char *cmd);
 int 	lookup(char *needle, const char **haystack, int count);
 void 	getip(int sock, int *ip);
 void 	help();
+int 	connect_port(state_t *state);
 
 void 	response(command_t *, state_t *);
 void 	ftp_user(command_t *, state_t *);
@@ -174,6 +179,8 @@ void 	ftp_quit(state_t *);
 void 	ftp_type(command_t *, state_t *);
 void 	ftp_abor(state_t *);
 void 	ftp_noop(state_t *);
+void 	ftp_port(command_t *, state_t *);
+void 	ftp_cdup(state_t *);
 void 	default_state(state_t *);
 ssize_t send_file(int, int, off_t *, size_t);
 

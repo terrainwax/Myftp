@@ -8,6 +8,21 @@
 #include "ftp.h"
 
 
+void response5(command_t *cmd, state_t *state)
+{
+	switch (lookup_cmd(cmd->command)) {
+	case PORT:
+		ftp_port(cmd, state);
+		break;
+	case CDUP:
+		ftp_cdup(state);
+		break;
+	default:
+		default_state(state);
+		break;
+	}
+}
+
 void response4(command_t *cmd, state_t *state)
 {
 	switch (lookup_cmd(cmd->command)) {
@@ -24,7 +39,7 @@ void response4(command_t *cmd, state_t *state)
 		ftp_noop(state);
 		break;
 	default:
-		default_state(state);
+		response5(cmd, state);
 		break;
 	}
 }

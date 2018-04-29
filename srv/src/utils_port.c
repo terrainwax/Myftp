@@ -9,6 +9,11 @@
 
 void gen_port(port_t *port)
 {
+	if (port == NULL)
+	{
+		perror("malloc");
+		exit(EXIT_FAIL);
+	}
 	srand(time(NULL));
 	port->p1 = 128 + (rand() % 64);
 	port->p2 = rand() % 0xff;
@@ -36,11 +41,10 @@ int is_numeric(const char * s)
 	return *p == '\0';
 }
 
-void help()
+void help(void)
 {
-	printf("%s%s%s%s%s","USAGE:  ./srv port path\n",
-	       "\tport is the port number on which ",
-		"the srv socket listens\n",
-	       "\tpath is the path to the home ",
+	printf("%s%s%s%s%s", "USAGE:  ./srv port path\n",
+		"\tport is the port number on which ",
+		"the srv socket listens\n", "\tpath is the path to the home ",
 		"directory for the Anonymous user\n");
 }

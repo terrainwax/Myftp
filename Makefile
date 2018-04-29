@@ -9,6 +9,7 @@ SRC_FILES=	main.c			\
 			response.c		\
 			utils.c			\
 			utils_port.c	\
+			socket.c		\
 			commands.c		\
 			cmd/abor.c		\
             cmd/cwd.c		\
@@ -26,6 +27,8 @@ SRC_FILES=	main.c			\
             cmd/size.c		\
             cmd/stor.c		\
             cmd/type.c		\
+            cmd/port.c		\
+            cmd/cdup.c		\
             cmd/user.c
 
 BONUS_DIR=	./bonus/

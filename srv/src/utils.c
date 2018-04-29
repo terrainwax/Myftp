@@ -45,7 +45,7 @@ int lookup_cmd(char *cmd)
 		"ABOR", "CWD", "DELE", "LIST", "MDTM",
 		"MKD", "NLST", "PASS", "PASV", "PORT", "PWD", "QUIT", "RETR",
 		"RMD", "RNFR", "RNTO", "SITE", "SIZE", "STOR", "TYPE", "USER",
-		"NOOP"
+		"NOOP", "CDUP"
 		}
 		;
 	const int cmdlist_count = sizeof(cmdlist_str) / sizeof(char *);

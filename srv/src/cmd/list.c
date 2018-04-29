@@ -33,24 +33,25 @@ void loop(list_t *list)
 
 void execute(state_t *state, list_t *list)
 {
-	if (!list->dp) {
+	if (!list->dp)
 		state->message = "550 Failed to open directory.\n";
-	} else {
-		if (state->mode == SERVER) {
-
+	else {
+		if (state->mode == SERVER)
 			list->connection = accept_connection(state->sock_pasv);
-			state->message = "150 listing.\n";
-			puts(state->message);
-			loop(list);
-			write_state(state);
-			state->message = "226 Directory send OK.\n";
-			state->mode = NORMAL;
-			close(list->connection);
-			close(state->sock_pasv);
-		} else if (state->mode == CLIENT)
-			state->message = "502 command_t not implemented.\n";
-		else
+		else if (state->mode == CLIENT)
+			list->connection = connect_port(state);
+		else {
 			state->message = "425 Use PASV or PORT first.\n";
+			return;
+		}
+		state->message = "150 listing.\n";
+		puts(state->message);
+		loop(list);
+		write_state(state);
+		state->message = "226 Directory send OK.\n";
+		close(list->connection);
+		state->mode == SERVER ?
+			close(state->sock_pasv): close(state->sock_port);
 	}
 }
 
@@ -68,6 +69,7 @@ void ftp_list(command_t *cmd, state_t *state)
 		getcwd(list.cwd, BSIZE);
 		list.dp = opendir(list.cwd);
 		execute(state, &list);
+		state->mode = NORMAL;
 		closedir(list.dp);
 		chdir(list.cwd_orig);
 	} else {

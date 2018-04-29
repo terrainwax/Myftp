@@ -69,27 +69,6 @@ void server(int port)
 	}
 }
 
-int create_socket(int port)
-{
-	int sock;
-	int reuse = 1;
-	struct sockaddr_in server_address;
-	server_address.sin_family = AF_INET;
-	server_address.sin_port = htons(port);
-	server_address.sin_addr.s_addr = INADDR_ANY;
-	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-		fprintf(stderr, "Cannot open socket");
-		exit(EXIT_FAIL);
-	}
-	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof reuse);
-	if (bind(sock, (struct sockaddr *)&server_address,
-		sizeof(server_address)) < 0) {
-		exit(EXIT_FAIL);
-	}
-	listen(sock, 5);
-	return sock;
-}
-
 int 	main(int ac, char **av)
 {
 	int port;
